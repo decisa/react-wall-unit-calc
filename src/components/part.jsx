@@ -41,7 +41,15 @@ class Part extends Component {
         </div>
         <Price price={ this.state.options.price } qty={ 1 } />
         <Price price={ this.state.options.price } qty={ this.props.part.qty } />
-        <button style={{justifySelf: 'center'}} className='button button-red button-square' onClick={ this.deletePart } >&times;</button>
+        <div className="part-delete">
+          <button 
+            style={{justifySelf: 'center'}} 
+            className='button button-red button-square' 
+            onClick={ this.deletePart } 
+          >
+            &times;
+          </button>
+        </div>
       </div>  
     );
   }
