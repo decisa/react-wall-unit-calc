@@ -5,11 +5,11 @@ import Price from './price';
 
 class Part extends Component {
   state = { 
-    name: '180cm cabinet',
+    name: this.props.part.name || '180cm cabinet',
     options: {
       price: this.props.part.price,
-      frame: 'materico',
-      fronts: 'matte lacquer'
+      frame: this.props.part.frame || 'materico',
+      fronts: this.props.part.fronts || 'matte lacquer'
     },
   }
 

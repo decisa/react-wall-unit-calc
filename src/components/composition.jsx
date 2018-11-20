@@ -5,6 +5,7 @@ class Composition extends Component {
   
 
   render() { 
+    const { onDelete, onIncrease, onDecrease } = this.props;
     return ( 
       <div className="composition">
         
@@ -25,9 +26,9 @@ class Composition extends Component {
             <Part 
               key={ part.id } 
               part={ part } 
-              onDelete={ this.props.onDelete }
-              onIncrease= { this.props.onIncrease }
-              onDecrease= { this.props.onDecrease }
+              onDelete={ onDelete }
+              onIncrease= { onIncrease }
+              onDecrease= { onDecrease }
             />
         ))}
       </div>
