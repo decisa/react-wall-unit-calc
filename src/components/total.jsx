@@ -5,7 +5,7 @@ export class Total extends Component {
     const total = this.props.parts.reduce((a, c) => a + c.qty * c.price, 0);
     return (
       <div className="total-price">
-        Total: ${ total.toFixed(2) }       
+        Total: ${total.toFixed(2)}
       </div>
     )
   }
