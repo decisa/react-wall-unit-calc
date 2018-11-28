@@ -5,6 +5,8 @@ import Composition from "./components/Composition";
 import Form from "./components/Form";
 import RefForm from "./components/RefForm";
 import loadWallUnit from "./wallUnits";
+import FancyTable from "./components/FancyTable/FancyTable";
+import TomasellaForm from "./components/TomasellaForm";
 
 class App extends Component {
   state = {
@@ -59,6 +61,7 @@ class App extends Component {
   render() {
     return (
       <main>
+        <TomasellaForm brand="Tomasella" />
         <h1>Wall Unit {this.state.name}</h1>
         <Composition
           onDelete={this.handleDelete}
@@ -70,6 +73,8 @@ class App extends Component {
         <Form addNewPart={this.handleAddNewPart} />
         <hr />
         <RefForm />
+        <hr />
+        <FancyTable />
       </main>
     );
   }
