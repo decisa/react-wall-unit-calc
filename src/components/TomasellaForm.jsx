@@ -8,7 +8,8 @@ class TomasellaForm extends Component {
     frame: [], // ["materico", "matte lacquer"],
     doors: [], //["matte lacquer", "essenza wood", "glossy lacquer"],
     selectedFrame: [],
-    selectedDoors: []
+    selectedDoors: [],
+    prices: { "matte lacquer": 595 }
   };
 
   onChange = e => {
@@ -27,8 +28,21 @@ class TomasellaForm extends Component {
   componentDidMount() {
     // get data about available finishes from BD / js file
     const { frame, doors } = getAttributesByBrand(this.props.brand);
-    console.log(frame, doors);
-    this.setState({ frame, doors });
+    const prices = { ...this.state.prices };
+    // console.log(prices);
+    frame.reduce((prices, frame) => {
+      if (!prices[frame]) {
+        prices[frame] = {};
+      }
+      doors.reduce((prices, door) => {
+        if (!prices[door]) {
+          prices[door] = {};
+        }
+      }, prices[frame]);
+    }, prices);
+    // console.log(prices);
+
+    this.setState({ frame, doors, prices });
   }
 
   renderCheckboxes = (name, array) => {
