@@ -9,7 +9,11 @@ class TomasellaForm extends Component {
     doors: [], //["matte lacquer", "essenza wood", "glossy lacquer"],
     selectedFrame: [],
     selectedDoors: [],
-    prices: { "matte lacquer": 595 }
+    prices: {
+      "matte lacquer": {
+        'essenza wood': 595
+      }
+    }
   };
 
   onChange = e => {
@@ -20,7 +24,7 @@ class TomasellaForm extends Component {
     e.preventDefault();
     console.log(
       `New Price matrix is ${this.state.selectedFrame.length} × ${
-        this.state.selectedDoors.length
+      this.state.selectedDoors.length
       }`
     );
   };
@@ -29,16 +33,18 @@ class TomasellaForm extends Component {
     // get data about available finishes from BD / js file
     const { frame, doors } = getAttributesByBrand(this.props.brand);
     const prices = { ...this.state.prices };
-    // console.log(prices);
-    frame.reduce((prices, frame) => {
-      if (!prices[frame]) {
-        prices[frame] = {};
+    console.log(prices);
+    frame.reduce((price, frame) => {
+      if (!price[frame]) {
+        price[frame] = {};
       }
-      doors.reduce((prices, door) => {
-        if (!prices[door]) {
-          prices[door] = {};
+      for (const door of doors) {
+        if (!price[frame][door]) {
+          price[frame][door] = {};
         }
-      }, prices[frame]);
+      }
+      return price;
+
     }, prices);
     // console.log(prices);
 
