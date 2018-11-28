@@ -9,7 +9,8 @@ body {
 }
 
 .App-logo {
-  animation: App-logo-spin infinite 20s linear;
+  -webkit-animation: App-logo-spin infinite 20s linear;
+          animation: App-logo-spin infinite 20s linear;
   height: 40vmin;
 }
 
@@ -28,12 +29,25 @@ body {
   color: #61dafb;
 }
 
-@keyframes App-logo-spin {
+@-webkit-keyframes App-logo-spin {
   from {
-    transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
   }
   to {
-    transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+
+@keyframes App-logo-spin {
+  from {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
   }
 }
 
@@ -75,6 +89,10 @@ body {
 
 .part-description h3 {
   margin: 0 auto;
+}
+
+.part-delete {
+  justify-self: center;
 }
 
 .part-options {
@@ -140,6 +158,40 @@ body {
 
 .new-part input:first-of-type {
   grid-column: span 2;
+}
+
+
+.total-price {
+  text-align: end;
+  padding: 10px;
+  font-size: 1.5em;
+  font-weight: 700;
+}
+
+@media screen and (max-width: 500px) {
+  .part-header {
+    display: none;
+  }
+  .quantity {
+    order: 2;
+ 
+  }
+  .part-description {
+    grid-row: span 2;
+    order: 1;
+  }
+  .part-price {
+    order: 4;
+    justify-self:  left;
+  }
+  .part-container {
+    grid-template-columns: 1fr  auto;
+  }
+  .part-delete {
+    order: 3;
+    
+  }
+
 }
 
 .new-part > * {

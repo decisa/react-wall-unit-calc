@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Total from "./Total";
 import Part from "./Part";
 
 class Composition extends Component {
@@ -36,6 +37,7 @@ class Composition extends Component {
                 onDecrease={onDecrease}
               />
             ))}
+            <Total parts={this.props.parts} />
           </div>
         </main>
       </React.Fragment>

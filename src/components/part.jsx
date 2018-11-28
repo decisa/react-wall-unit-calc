@@ -7,7 +7,7 @@ class Part extends Component {
     name: this.props.part.name || "180cm cabinet",
     options: {
       price: this.props.part.price,
-      qty: this.props.part.qty || 1,
+      qty: this.props.part.qty || 0,
       frame: this.props.part.frame || "materico",
       fronts: this.props.part.fronts || "matte lacquer"
     }

@@ -47,7 +47,7 @@ const wallUnits = {
 
 function getWallUnit(unit) {
   return [...wallUnits[unit]].map((elem, ind) => {
-    return { ...elem, id: ind };
+    return { ...elem, id: ind, qty: elem.qty || 0 };
   });
 }
 

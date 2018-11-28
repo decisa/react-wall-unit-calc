@@ -13,7 +13,7 @@ class QuantitySelector extends Component {
   render() {
     return (
       <div className="quantity">
-        Qty: {this.props.part.qty || 1}
+        Qty: {this.props.part.qty || 0}
         <br />
         <button
           className="button button-grey button-square"
