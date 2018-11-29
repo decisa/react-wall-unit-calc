@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import getAttributesByBrand from "../js/brands";
+import PriceTable from "./PriceTable/PriceTable";
 
 class TomasellaForm extends Component {
   state = {
@@ -11,7 +12,7 @@ class TomasellaForm extends Component {
     selectedDoors: [],
     prices: {
       "matte lacquer": {
-        'essenza wood': 595
+        "essenza wood": 595
       }
     }
   };
@@ -20,11 +21,19 @@ class TomasellaForm extends Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
+  onPriceChange = (row, column, newPrice) => {
+    const prices = { ...this.state.prices };
+    prices[row] = { ...this.state.prices[row] };
+    prices[row][column] = newPrice;
+
+    this.setState({ prices });
+  };
+
   submitForm = e => {
     e.preventDefault();
     console.log(
       `New Price matrix is ${this.state.selectedFrame.length} × ${
-      this.state.selectedDoors.length
+        this.state.selectedDoors.length
       }`
     );
   };
@@ -40,11 +49,10 @@ class TomasellaForm extends Component {
       }
       for (const door of doors) {
         if (!price[frame][door]) {
-          price[frame][door] = {};
+          price[frame][door] = -1;
         }
       }
       return price;
-
     }, prices);
     // console.log(prices);
 
@@ -72,6 +80,15 @@ class TomasellaForm extends Component {
     );
   };
 
+  swapRows = () => {
+    const selectedFrame = [...this.state.selectedFrame];
+    const temp = selectedFrame[0];
+    selectedFrame[0] = selectedFrame[1];
+    selectedFrame[1] = temp;
+
+    this.setState({ selectedFrame });
+  };
+
   onSelect = e => {
     const selectedItems = [...e.currentTarget.elements].reduce((a, c) => {
       if (c.checked) a.push(c.value);
@@ -95,6 +112,13 @@ class TomasellaForm extends Component {
         {this.renderCheckboxes("Frame", this.state.frame)}
         {this.renderCheckboxes("Doors", this.state.doors)}
 
+        <PriceTable
+          rows={this.state.selectedFrame}
+          columns={this.state.selectedDoors}
+          prices={this.state.prices}
+          onPriceChange={this.onPriceChange}
+          swapRows={this.swapRows}
+        />
         <button>Add</button>
       </form>
     );

@@ -10,7 +10,7 @@ body {
 
 .App-logo {
   -webkit-animation: App-logo-spin infinite 20s linear;
-          animation: App-logo-spin infinite 20s linear;
+  animation: App-logo-spin infinite 20s linear;
   height: 40vmin;
 }
 
@@ -32,22 +32,22 @@ body {
 @-webkit-keyframes App-logo-spin {
   from {
     -webkit-transform: rotate(0deg);
-            transform: rotate(0deg);
+    transform: rotate(0deg);
   }
   to {
     -webkit-transform: rotate(360deg);
-            transform: rotate(360deg);
+    transform: rotate(360deg);
   }
 }
 
 @keyframes App-logo-spin {
   from {
     -webkit-transform: rotate(0deg);
-            transform: rotate(0deg);
+    transform: rotate(0deg);
   }
   to {
     -webkit-transform: rotate(360deg);
-            transform: rotate(360deg);
+    transform: rotate(360deg);
   }
 }
 
@@ -148,8 +148,33 @@ body {
   margin: 5px;
 }
 
+table {
+  border: 1px solid #ddd;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td,
+th {
+  border: 1px solid #ddd;
+  padding: 0;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+td input {
+  width: 100%;
+  padding: 10px;
+  text-align: center;
+  border: none;
+  box-sizing: border-box;
+}
+
+th {
+  background: #eee;
+}
 .new-part {
-  max-width: 500px;
+  width: 100%;
   display: grid;
   border: 1px solid #ccc;
 
@@ -160,6 +185,11 @@ body {
   grid-column: span 2;
 }
 
+.new-part .form-container {
+  grid-column: span 2;
+  width: 100%;
+  align-self: center;
+}
 
 .total-price {
   text-align: end;
@@ -174,7 +204,6 @@ body {
   }
   .quantity {
     order: 2;
- 
   }
   .part-description {
     grid-row: span 2;
@@ -182,20 +211,20 @@ body {
   }
   .part-price {
     order: 4;
-    justify-self:  left;
+    justify-self: left;
   }
   .part-container {
-    grid-template-columns: 1fr  auto;
+    grid-template-columns: 1fr auto;
   }
   .part-delete {
     order: 3;
-    
   }
-
 }
 
 .new-part > * {
+  box-sizing: border-box;
   padding: 10px;
+  margin: 0;
 }
 
 .new-part select {

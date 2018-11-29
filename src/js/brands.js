@@ -1,7 +1,13 @@
 const brands = {
   Tomasella: {
     frame: ["materico", "matte lacquer", "essenza wood", "glossy lacquer"],
-    doors: ["matte lacquer", "essenza wood", "glossy lacquer", "something new"]
+    doors: [
+      "materico",
+      "matte lacquer",
+      "essenza wood",
+      "glossy lacquer",
+      "something new"
+    ]
   }
 };
 
