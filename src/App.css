@@ -170,6 +170,15 @@ td input {
   box-sizing: border-box;
 }
 
+input[type="text"],
+input[type="number"] {
+  text-size: 16px;
+}
+
+input[type="text"]:focus {
+  background: #eee;
+}
+
 th {
   background: #eee;
 }
@@ -178,17 +187,25 @@ th {
   display: grid;
   border: 1px solid #ccc;
 
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(6, 1fr);
+}
+
+.new-part fieldset {
+  grid-column: span 3;
 }
 
 .new-part input:first-of-type {
-  grid-column: span 2;
+  grid-column: span 6;
 }
 
 .new-part .form-container {
-  grid-column: span 2;
+  grid-column: span 6;
   width: 100%;
   align-self: center;
+}
+
+.new-part-sizes {
+  grid-column: span 2;
 }
 
 .total-price {

@@ -37,8 +37,8 @@ class PriceTable extends Component {
             {rows}
           </tbody>
         </table>
-        <button onClick={this.swapRows}>swap</button>
-        <button onClick={this.increase}>+</button>
+        {/* <button onClick={this.swapRows}>swap</button> */}
+        {/* <button onClick={this.increase}>+</button> */}
       </div>
     );
   }

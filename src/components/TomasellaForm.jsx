@@ -5,7 +5,11 @@ import PriceTable from "./PriceTable/PriceTable";
 class TomasellaForm extends Component {
   state = {
     name: "",
-    price: 0,
+    sizes: {
+      width: -1,
+      depth: -1,
+      height: -1
+    },
     frame: [], // ["materico", "matte lacquer"],
     doors: [], //["matte lacquer", "essenza wood", "glossy lacquer"],
     selectedFrame: [],
@@ -21,6 +25,16 @@ class TomasellaForm extends Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
+  onSizeChange = e => {
+    const newSizes = { ...this.state.sizes };
+    if (e.target.value === "") {
+      newSizes[e.target.name] = -1;
+    } else {
+      newSizes[e.target.name] = parseInt(e.target.value);
+    }
+    this.setState({ sizes: newSizes });
+  };
+
   onPriceChange = (row, column, newPrice) => {
     const prices = { ...this.state.prices };
     prices[row] = { ...this.state.prices[row] };
@@ -31,11 +45,25 @@ class TomasellaForm extends Component {
 
   submitForm = e => {
     e.preventDefault();
-    console.log(
-      `New Price matrix is ${this.state.selectedFrame.length} × ${
-        this.state.selectedDoors.length
-      }`
-    );
+    const newProduct = {
+      name: this.state.name,
+      sizes: { ...this.state.sizes },
+      prices: {}
+    };
+
+    this.state.selectedFrame.reduce((prices, frameKey) => {
+      prices[frameKey] = {};
+
+      this.state.selectedDoors.reduce((prices, doorKey) => {
+        prices[doorKey] = this.state.prices[frameKey][doorKey];
+
+        return prices;
+      }, prices[frameKey]);
+
+      return prices;
+    }, newProduct.prices);
+
+    console.log(newProduct);
   };
 
   componentDidMount() {
@@ -54,11 +82,11 @@ class TomasellaForm extends Component {
       }
       return price;
     }, prices);
-    // console.log(prices);
 
     this.setState({ frame, doors, prices });
   }
 
+  // helper function to render checkboxes of available finishes
   renderCheckboxes = (name, array) => {
     const inputs = array.map(elem => {
       return (
@@ -80,6 +108,7 @@ class TomasellaForm extends Component {
     );
   };
 
+  // just for fun testing. need to delete on clean up
   swapRows = () => {
     const selectedFrame = [...this.state.selectedFrame];
     const temp = selectedFrame[0];
@@ -89,6 +118,7 @@ class TomasellaForm extends Component {
     this.setState({ selectedFrame });
   };
 
+  // updates the state of selectedDoors and selectedFrames
   onSelect = e => {
     const selectedItems = [...e.currentTarget.elements].reduce((a, c) => {
       if (c.checked) a.push(c.value);
@@ -109,6 +139,30 @@ class TomasellaForm extends Component {
           value={this.state.name}
           onChange={this.onChange}
         />
+        <input
+          className="new-part-sizes"
+          placeholder="W"
+          type="number"
+          onChange={this.onSizeChange}
+          name="width"
+          value={this.state.sizes.width >= 0 ? this.state.sizes.width : ""}
+        />
+        <input
+          className="new-part-sizes"
+          placeholder="D"
+          type="number"
+          onChange={this.onSizeChange}
+          name="depth"
+          value={this.state.sizes.depth >= 0 ? this.state.sizes.depth : ""}
+        />
+        <input
+          className="new-part-sizes"
+          placeholder="H"
+          type="number"
+          onChange={this.onSizeChange}
+          name="height"
+          value={this.state.sizes.height >= 0 ? this.state.sizes.height : ""}
+        />
         {this.renderCheckboxes("Frame", this.state.frame)}
         {this.renderCheckboxes("Doors", this.state.doors)}
 
@@ -119,7 +173,7 @@ class TomasellaForm extends Component {
           onPriceChange={this.onPriceChange}
           swapRows={this.swapRows}
         />
-        <button>Add</button>
+        <button className="button button-red">Submit</button>
       </form>
     );
   }
