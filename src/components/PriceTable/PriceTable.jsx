@@ -20,7 +20,11 @@ class PriceTable extends Component {
   };
 
   render() {
-    const rows = this.props.rows.map((row, rowId) => (
+    const { rows, columns, prices } = this.props;
+
+    if (!rows || !columns || !prices) return null;
+
+    const tableRows = rows.map((row, rowId) => (
       <PriceRow
         key={`row-${row}`}
         rowName={row}
@@ -33,8 +37,8 @@ class PriceTable extends Component {
       <div className="form-container">
         <table>
           <tbody>
-            <PriceHeader headers={this.props.columns} />
-            {rows}
+            <PriceHeader headers={columns} />
+            {tableRows}
           </tbody>
         </table>
         {/* <button onClick={this.swapRows}>swap</button> */}

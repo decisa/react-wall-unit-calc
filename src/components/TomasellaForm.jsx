@@ -4,21 +4,35 @@ import PriceTable from "./PriceTable/PriceTable";
 
 class TomasellaForm extends Component {
   state = {
+    loading: true,
     name: "",
     sizes: {
       width: -1,
       depth: -1,
       height: -1
     },
-    frame: [], // ["materico", "matte lacquer"],
-    doors: [], //["matte lacquer", "essenza wood", "glossy lacquer"],
-    selectedFrame: [],
-    selectedDoors: [],
+    attributes: [], // [{attrName1:[materico, matte, ... ]}, {attrName2: [...]}, ... ]
+    // attributeNames: [], // [attrName1, attrName2, ...]
+    selectedAttributes: [
+      ["matte lacquer", "glossy lacquer"],
+      ["materico", "essenza wood"]
+    ],
+    // currently I have selectedDoors = [selectedAttr1, selectedAttr2 , etc];
+    // supposedly I can have it as an array of filtered arrays
+    //  selectedAttributes: [[filtered array for attrName1], [filtered array for attrName2] , ...]
+    //
+    //
     prices: {
       "matte lacquer": {
         "essenza wood": 595
       }
     }
+  };
+
+  getPrice = (attributes, prices) => {
+    return attributes.reduce((price, attribute) => {
+      return price[attribute];
+    }, prices);
   };
 
   onChange = e => {
@@ -48,51 +62,85 @@ class TomasellaForm extends Component {
     const newProduct = {
       name: this.state.name,
       sizes: { ...this.state.sizes },
-      prices: {}
+      prices: {},
+      attributes: []
     };
 
-    this.state.selectedFrame.reduce((prices, frameKey) => {
-      prices[frameKey] = {};
+    newProduct.attributes = this.state.selectedAttributes.map((attr, id) => {
+      return Object.assign(
+        {},
+        { values: attr, name: this.state.attributes[id].name, selected: 0 }
+      );
+    });
 
-      this.state.selectedDoors.reduce((prices, doorKey) => {
-        prices[doorKey] = this.state.prices[frameKey][doorKey];
-
+    // generate prices object based on selected attributes (ignore non selected)
+    // supports 2 attributes only now
+    this.state.selectedAttributes[0].reduce((prices, attr1) => {
+      prices[attr1] = {};
+      this.state.selectedAttributes[1].reduce((prices, attr2) => {
+        prices[attr2] = this.state.prices[attr1][attr2];
         return prices;
-      }, prices[frameKey]);
-
+      }, prices[attr1]);
       return prices;
     }, newProduct.prices);
-
-    console.log(newProduct);
+    this.props.onSubmit(newProduct);
+    console.log("new product = ", newProduct);
   };
 
   componentDidMount() {
     // get data about available finishes from BD / js file
-    const { frame, doors } = getAttributesByBrand(this.props.brand);
+    const attributes = getAttributesByBrand(this.props.brand);
+    // const attributeNames = attributes.map(elem => Object.keys(elem)[0]);
+    // const [frame, doors] = attributes;
+    // copy initial values for prices:
     const prices = { ...this.state.prices };
-    console.log(prices);
-    frame.reduce((price, frame) => {
-      if (!price[frame]) {
-        price[frame] = {};
+
+    // {frame: {doors: price}}
+
+    // frame.reduce((price, frame) => {
+    //   if (!price[frame]) {
+    //     price[frame] = {};
+    //   }
+    //   for (const door of doors) {
+    //     if (!price[frame][door]) {
+    //       price[frame][door] = -1;
+    //     }
+    //   }
+    //   return price;
+    // }, prices);
+
+    // const frame = attributes[0].frame;
+    // const doors = attributes[1].doors;
+    // console.log("frame = ", frame);
+    // console.log("doors = ", doors);
+    // initialize missing prices with -1, in the same order as defined in attributes
+    attributes[0].values.reduce((priceObject, attribute) => {
+      if (!priceObject[attribute]) {
+        priceObject[attribute] = {};
       }
-      for (const door of doors) {
-        if (!price[frame][door]) {
-          price[frame][door] = -1;
+      for (const secondAttribute of attributes[1].values) {
+        if (!priceObject[attribute][secondAttribute]) {
+          priceObject[attribute][secondAttribute] = -1;
         }
       }
-      return price;
+      return priceObject;
     }, prices);
 
-    this.setState({ frame, doors, prices });
+    this.setState({ prices, attributes, loading: false });
   }
 
   // helper function to render checkboxes of available finishes
-  renderCheckboxes = (name, array) => {
+  // creates a fieldset with legend = name , and options = elements of array
+  renderCheckboxes = (name, id, array) => {
     const inputs = array.map(elem => {
+      const checked =
+        this.state.selectedAttributes[id] &&
+        this.state.selectedAttributes[id].includes(elem);
+
       return (
         <React.Fragment>
           <label>
-            <input type="checkbox" name={name} value={elem} />
+            <input type="checkbox" checked={checked} name={name} value={elem} />
             {elem}
           </label>
           <br />
@@ -101,33 +149,40 @@ class TomasellaForm extends Component {
     });
 
     return (
-      <fieldset onChange={this.onSelect}>
+      <fieldset onChange={this.onSelect} name={id}>
         <legend>{name} options</legend>
         {inputs}
       </fieldset>
     );
   };
 
-  // just for fun testing. need to delete on clean up
-  swapRows = () => {
-    const selectedFrame = [...this.state.selectedFrame];
-    const temp = selectedFrame[0];
-    selectedFrame[0] = selectedFrame[1];
-    selectedFrame[1] = temp;
-
-    this.setState({ selectedFrame });
-  };
-
   // updates the state of selectedDoors and selectedFrames
   onSelect = e => {
-    const selectedItems = [...e.currentTarget.elements].reduce((a, c) => {
-      if (c.checked) a.push(c.value);
-      return a;
-    }, []);
-    this.setState({ [`selected${e.target.name}`]: selectedItems });
+    const attributeID = e.currentTarget.name;
+    const selectedAttributes = [...this.state.selectedAttributes];
+
+    selectedAttributes[attributeID] = [...e.currentTarget.elements].reduce(
+      (a, c) => {
+        if (c.checked) a.push(c.value);
+        return a;
+      },
+      []
+    );
+
+    this.setState({ selectedAttributes });
   };
 
   render() {
+    const attributeSelectors = this.state.attributes.map(
+      (attribute, attributeID) => {
+        return this.renderCheckboxes(
+          attribute.name,
+          attributeID,
+          attribute.values
+        );
+      }
+    );
+
     return (
       <form className="new-part" onSubmit={this.submitForm}>
         <label>Part name</label>
@@ -163,16 +218,19 @@ class TomasellaForm extends Component {
           name="height"
           value={this.state.sizes.height >= 0 ? this.state.sizes.height : ""}
         />
-        {this.renderCheckboxes("Frame", this.state.frame)}
-        {this.renderCheckboxes("Doors", this.state.doors)}
 
-        <PriceTable
-          rows={this.state.selectedFrame}
-          columns={this.state.selectedDoors}
-          prices={this.state.prices}
-          onPriceChange={this.onPriceChange}
-          swapRows={this.swapRows}
-        />
+        {attributeSelectors}
+        {/* {this.renderCheckboxes("Frame", this.state.frame)}
+        {this.renderCheckboxes("Doors", this.state.doors)} */}
+
+        {this.state.loading ? null : (
+          <PriceTable
+            rows={this.state.selectedAttributes[0]}
+            columns={this.state.selectedAttributes[1]}
+            prices={this.state.prices}
+            onPriceChange={this.onPriceChange}
+          />
+        )}
         <button className="button button-red">Submit</button>
       </form>
     );

@@ -10,18 +10,15 @@ class PriceRow extends Component {
     const prices = this.props.prices;
     //rowName={row} colNames={this} />
     const { rowName, colNames } = this.props;
-    console.log("rowName", rowName);
-    console.log("colNames", colNames);
-    // console.log("row=", row);
-    // return "hi";
+
     const elements = colNames.map(colName => {
       // <td></td>
       let price = prices[rowName][colName];
       if (price < 0) {
-        console.log("empty");
+        // console.log("empty");
         price = "";
       }
-      console.log(`[${rowName}-${colName}] = ${price}`);
+      // console.log(`[${rowName}-${colName}] = ${price}`);
       return (
         <td key={`${rowName}-${colName}`}>
           <input
@@ -30,7 +27,7 @@ class PriceRow extends Component {
             placeholder="N/A"
             onChange={e => {
               this.props.onPriceChange(rowName, colName, e.target.value);
-              console.log(`[${rowName}-${colName}] = ${e.target.value}`);
+              // console.log(`[${rowName}-${colName}] = ${e.target.value}`);
             }}
           />
         </td>

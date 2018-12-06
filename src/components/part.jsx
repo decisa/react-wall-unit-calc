@@ -31,7 +31,7 @@ class Part extends Component {
     return (
       <div className="part-container">
         <Quantity
-          part={this.props.part}
+          element={this.props.part}
           onIncrease={this.props.onIncrease}
           onDecrease={this.props.onDecrease}
         />

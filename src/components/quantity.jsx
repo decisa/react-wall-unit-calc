@@ -4,16 +4,16 @@ class QuantitySelector extends Component {
   // state = { value: this.props.qty };
 
   handleIncrement = () => {
-    this.props.onIncrease(this.props.part);
+    this.props.onIncrease(this.props.element);
   };
 
   handleDecrement = () => {
-    if (this.props.part.qty > 0) this.props.onDecrease(this.props.part);
+    if (this.props.element.qty > 0) this.props.onDecrease(this.props.element);
   };
   render() {
     return (
       <div className="quantity">
-        Qty: {this.props.part.qty || 0}
+        Qty: {this.props.element.qty || 0}
         <br />
         <button
           className="button button-grey button-square"

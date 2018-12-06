@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import Total from "./Total";
 import Part from "./Part";
+import Element from "./Element";
+import CompHeader from "./CompHeader";
 
 class Composition extends Component {
   render() {
@@ -10,34 +12,23 @@ class Composition extends Component {
         <header className="selection-head">
           <h1>Select Wall Unit</h1>
           <button className="button button-grey" onClick={onLoadClick}>
-            Load
+            Reset
           </button>
         </header>
         <main>
           <div className="composition">
-            {/* <div className="part-header" style="">Qty</div>
-          <div className="part-header">Part Description</div>
-          <div className="part-header">Price</div>
-          <div className="part-header">Total</div>
-          <div className="part-header">&times;</div> */}
-            <div className="part-header">
-              <div style={{ textAlign: "center" }}>Qty</div>
-              <div>Part Description</div>
-              <div style={{ textAlign: "right" }}>Price</div>
-              <div style={{ textAlign: "right" }}>Total</div>
-              <div style={{ textAlign: "center" }}>&times;</div>
-            </div>
-
-            {this.props.parts.map(part => (
-              <Part
-                key={part.id}
-                part={part}
+            <CompHeader />
+            {this.props.elements.map(element => (
+              <Element
+                key={element.id}
+                element={element}
+                newSelection={this.props.newSelection}
                 onDelete={onDelete}
                 onIncrease={onIncrease}
                 onDecrease={onDecrease}
               />
             ))}
-            <Total parts={this.props.parts} />
+            <Total elements={this.props.elements} />
           </div>
         </main>
       </React.Fragment>

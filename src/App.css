@@ -51,7 +51,7 @@ body {
   }
 }
 
-.part-header {
+.composition-header {
   display: grid;
   grid-template-columns: 2fr 4fr 2fr 2fr 1fr;
   background-image: linear-gradient(rgb(43, 43, 43), rgb(110, 110, 110));
@@ -216,7 +216,7 @@ th {
 }
 
 @media screen and (max-width: 500px) {
-  .part-header {
+  .composition-header {
     display: none;
   }
   .quantity {

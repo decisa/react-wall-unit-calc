@@ -1,0 +1,45 @@
+{
+  "name": "Tester A",
+  "sizes": { "width": 50, "depth": 60, "height": 45 },
+  "prices": {
+    "materico": {
+      "materico": "12",
+      "matte lacquer": "21",
+      "essenza wood": "111",
+      "glossy lacquer": "878",
+      "something new": "896"
+    },
+    "matte lacquer": {
+      "materico": "5656",
+      "matte lacquer": "454",
+      "essenza wood": 595,
+      "glossy lacquer": "454",
+      "something new": "33"
+    },
+    "glossy lacquer": {
+      "materico": "545",
+      "matte lacquer": "47",
+      "essenza wood": "767",
+      "glossy lacquer": "454",
+      "something new": "34"
+    }
+  },
+  "materials": [
+    {
+      "values": ["materico", "matte lacquer", "glossy lacquer"],
+      "name": "Base",
+      "selected": 0
+    },
+    {
+      "values": [
+        "materico",
+        "matte lacquer",
+        "essenza wood",
+        "glossy lacquer",
+        "something new"
+      ],
+      "name": "Top",
+      "selected": 0
+    }
+  ]
+}
